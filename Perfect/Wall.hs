@@ -6,12 +6,13 @@ import Control.Arrow
 import Data.Ord
 import Data.Ratio
 import Data.List
+import Control.DeepSeq
 
 primesGen :: Integer -> [Integer]
 primesGen maxPrime = takeWhile (<= maxPrime) Primes.primes
 
 ratiosGen :: (Integer -> Integer -> Integer) -> [Integer] -> Integer -> [[(Ratio Integer, Integer)]]
-ratiosGen sigmaPrimorial primes maxPower = map ( map (\(sigmame, pa) -> (sigmame % pa, pa)) ) ratios' where
+ratiosGen sigmaPrimorial primes maxPower = primes `deepseq` map ( map (\(sigmame, pa) -> (sigmame % pa, pa)) ) ratios' where
   -- Initial set of sigma on primorials
   ratios'' = map (\p -> map (sigmaPrimorial p &&& (^) p) [1..maxPower]) primes
   -- If numerator contains primes > maxPrime it cannot be cancelled out
@@ -21,7 +22,7 @@ ratiosGen sigmaPrimorial primes maxPower = map ( map (\(sigmame, pa) -> (sigmame
            | otherwise = pred (n `div` gcd prod n)
     prod = product primes
 
-wall perfectness brs prs = wall' where
+wall perfectness brs prs = perfectness `deepseq` brs `deepseq` prs `deepseq` wall' where
   wall' = concatMap f where
     prsSorted = sortBy cmp prs where
       cmp = comparing (\p -> (length $ (Map.!) brs p, p))

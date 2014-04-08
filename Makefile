@@ -7,4 +7,4 @@ perfect.txt: perfect
 all: perfect
 
 clean:
-	rm perfect.hi perfect.o perfect
+	rm *.hi *.o */*.hi */*.o perfect

@@ -1,6 +1,7 @@
 import qualified Data.Map.Strict as Map
 import Control.Parallel.Strategies
 import Data.Ratio
+import Control.DeepSeq
 
 import Perfect.Sigmas
 import Perfect.Wall
@@ -17,16 +18,16 @@ perfectness = 2%1 :: Rational
 
 
 primes = primesGen maxPrime
-ratios = ratiosGen sigmaPrimorial primes maxPower
+ratios = primes `deepseq` ratiosGen sigmaPrimorial primes maxPower
 
 bricks :: Map.Map Integer [(Ratio Integer, Integer)]
-bricks = Map.fromList $ zip primes ratios
+bricks = ratios `deepseq` Map.fromList $ zip primes ratios
 
-primes2 = dropWhile (<=2) primes
-bricks2 = Map.delete 2 bricks
+primes2 = primes `deepseq` dropWhile (<=2) primes
+bricks2 = bricks `deepseq` Map.delete 2 bricks
 
-primes6 = dropWhile (<=3) primes
-bricks6 = Map.delete 2 $ Map.delete 3 bricks
+primes6 = primes `deepseq`dropWhile (<=3) primes
+bricks6 = bricks `deepseq` Map.delete 2 $ Map.delete 3 bricks
 
 
 
