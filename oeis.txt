@@ -1,0 +1,11 @@
+https://oeis.org/A160678
+https://oeis.org/A127724
+https://oeis.org/A072002
+
+https://oeis.org/A091321 - !!! 162729000
+https://oeis.org/A092356 - !!! 920387520 203558400...
+https://oeis.org/A092760
+https://oeis.org/A066218
+https://oeis.org/A007358
+A092788
+https://oeis.org/A066226

@@ -9,20 +9,6 @@ import Data.Ord
 
 sigmaPrimorial = sigmaModExpPrimorial
 
-{-
-https://oeis.org/A160678
-https://oeis.org/A127724
-https://oeis.org/A072002
-
-https://oeis.org/A091321 - !!! 162729000
-https://oeis.org/A092356 - !!! 920387520 203558400...
-https://oeis.org/A092760
-https://oeis.org/A066218
-https://oeis.org/A007358
-A092788
-https://oeis.org/A066226
--}
-
 main =
   --mapM (\(_,a) -> appendFile "e-perfect.txt" (show a ++ "\n")) try
   mapM (\(_,a) -> print a) try
@@ -47,8 +33,6 @@ sigmaOrdUnitPrimorial p = sigmaUnitPrimorial p
 
 sigmaUnitOrdPrimorial 2 = sigmaUnitPrimorial 2
 sigmaUnitOrdPrimorial p = sigmaUsualPrimorial p
-
---a066218Primorial p a =
 
 ratios = map (\p -> map (sigmaPrimorial p Control.Arrow.&&& (^) p) [1..maxPower]) primes
 
@@ -114,17 +98,3 @@ try = concat (map (\x -> wall [x]) start `using` parList rseq) where
 
 try' = concat (map (\x -> wall' [x]) start `using` parList rseq) where
   start = (Map.!) bricks 2
-
-
---wall xs = concatMap f xs where
---  f (ratio, n)
---    | ratio==perfectness%1 = [(ratio, n)]
---    | n`mod`p==0 = []
---    | otherwise = wall [(ratio*rat, n*pa) | (rat,pa)<-pile, ratio*rat<=perfectness%1]  where
---      num = numerator ratio
---      den = denominator ratio
---      pile = filter pred $ dropWhile (\(_,pa) -> num`div`p`mod`pa==0) $ (Map.!) bricks p
---      pred (rat, pa) = gcd (num3 `div` gcd num3 den) den == 1 where
---        num2 = numerator rat
---        num3 = if num2`mod`perfectness == 0 then num2`div`perfectness else num2
---      p = minPrimeDivisor num
