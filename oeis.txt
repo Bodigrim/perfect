@@ -1,11 +1,46 @@
-https://oeis.org/A160678
-https://oeis.org/A127724
-https://oeis.org/A072002
+https://oeis.org/A141643 - Numbers n such that sigma(n)/n = 5/2
+	known terms: 24, 91963648, 10200236032
+			sigmaPrimorial = sigmaUsualPrimorial
+			perfectness = 5%2
+			try = try2
 
-https://oeis.org/A091321 - !!! 162729000
-https://oeis.org/A092356 - !!! 920387520 203558400...
-https://oeis.org/A092760
-https://oeis.org/A066218
-https://oeis.org/A007358
-A092788
-https://oeis.org/A066226
+https://oeis.org/A055153 - Numbers n such that sigma(n) = 7n/2.
+	known terms: 4320, 4680, 26208, 20427264, 197064960, 21857648640, 57575890944, 88898072401645056, 301183421949935616, 9083288595228991885541376, 22290964134962716779872256, 230361837156847526055247872
+			sigmaPrimorial = sigmaUsualPrimorial
+			perfectness = 7%2
+			try = try6
+
+https://oeis.org/A127725 - Numbers n that are 2-imperfect.
+	known terms: 	2, 12, 40, 252, 880, 10880, 75852, 715816960, 3074457344902430720
+			sigmaPrimorial = sigmaAlterPrimorial
+			perfectness = 1%2 :: Rational
+			try = try2
+
+https://oeis.org/A127724 - Numbers n that are k-imperfect.
+	known terms - up to 76324550400
+			sigmaPrimorial = sigmaAlterPrimorial
+			perfectness = 1%3 :: Rational
+			try = try6
+
+https://oeis.org/A091321 - OU-Sigma perfect numbers.
+	known terms: 6, 28, 90, 120, 496, 8128, 10080, 63700, 220500, 523776, 1323000, 1528800, 2056320, 33550336, 8589869056, 22144573440, 51001180160, 153003540480, 243643438080, 583125903360, 71724486113280, 1555825650042470400
+		sigmaPrimorial = sigmaOrdUnitPrimorial
+		perfectness = 2%1 :: Rational
+		try = try2
+
+
+https://oeis.org/A092356 - UO-sigma perfect numbers.
+	known terms: 6, 60, 1080, 6552, 36720, 47520, 87360, 222768, 288288, 8173440, 49585536, 683289600, 4201148160, 6442712640, 25486965504, 1610457666048, 3633511924224, 4399770343643136, 9926754576979968, 629720915643477504
+		sigmaPrimorial = sigmaUnitOrdPrimorial
+		perfectness = 2%1 :: Rational
+		try = try6
+
+https://oeis.org/A092760 - Unitary-sigma unitary-phi perfect numbers.
+
+https://oeis.org/A007357 - Infinitary perfect numbers.
+
+https://oeis.org/A007358 - Infinitary multi-perfect numbers.
+
+https://oeis.org/A066218 - Numbers n such that sigma(n) = sum_{k divides n, k < n} sigma(k).
+
+https://oeis.org/A066226 - The sigma(EulerPhi)-perfect numbers, where the set of f-perfect numbers for an arithmetical function f is defined in A066218.
