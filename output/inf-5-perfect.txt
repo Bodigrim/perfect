@@ -1,0 +1,5 @@
+List (possibly incomplete) of infinitary multi-perfect numbers with quotient k=5.
+
+212517062615531520    [Cohen, 1990]
+483476317450334208000 [Cohen, 1990]
+

@@ -1,0 +1,11 @@
+List (possibly incomplete) of infinitary multi-perfect numbers with quotient k=4.
+
+133660800             [Cohen, 1990]
+758782080             [Cohen, 1990]
+1726229232000         [Cohen, 1990]
+15292179302400        [Cohen, 1990]
+86812525578240
+53129265653882880     [Cohen, 1990]
+197498495690496000    [Cohen, 1990]
+120869079362583552000 [Cohen, 1990]
+
