@@ -3,14 +3,33 @@ module Perfect.Config where
 import Data.Ratio
 import Perfect.Sigmas
 
-maxPrime = 700 :: Integer
-maxPower = 70  :: Integer
+maxPrime = 1000 :: Integer
+maxPower = 100  :: Integer
+--maxPrimorial = 2^32 :: Integer
 
--- me-perfect
-sigmaPrimorial = sigmaModExpPrimorial
+---- Mod-exp-inf-perfect
+--sigmaPrimorial = sigmaModExpInfPrimorial
+--perfectness = 2%1 :: Rational
+--tryNumber = 6
+--fileName = "output/mod-exp-inf.txt"
+
+-- Exp-inf-perfect
+sigmaPrimorial = sigmaExpInfPrimorial
 perfectness = 2%1 :: Rational
 tryNumber = 6
-fileName = "output/me-perfect.txt"
+fileName = "output/exp-inf.txt"
+
+---- Exp-unit-perfect
+--sigmaPrimorial = sigmaExpUnitPrimorial
+--perfectness = 2%1 :: Rational
+--tryNumber = 6
+--fileName = "output/exp-unit.txt"
+
+---- me-perfect
+--sigmaPrimorial = sigmaModExpPrimorial
+--perfectness = 2%1 :: Rational
+--tryNumber = 6
+--fileName = "output/me-perfect.txt"
 
 ---- sigma(n)/n = 5/2
 --sigmaPrimorial = sigmaUsualPrimorial
@@ -33,10 +52,10 @@ fileName = "output/me-perfect.txt"
 ---- 2-imperfect
 --sigmaPrimorial = sigmaAlterPrimorial
 --perfectness = 1%2 :: Rational
---tryNumber = 10
+--tryNumber = 2
 --fileName = "output/2-imperfect.txt"
 
----- 3-imperfect
+-- 3-imperfect
 --sigmaPrimorial = sigmaAlterPrimorial
 --perfectness = 1%3 :: Rational
 --tryNumber = 6
@@ -48,6 +67,17 @@ fileName = "output/me-perfect.txt"
 --tryNumber = 2
 --fileName = "output/4-imperfect.txt"
 
+---- 5-imperfect
+--sigmaPrimorial = sigmaAlterPrimorial
+--perfectness = 1%5 :: Rational
+--tryNumber = 30
+--fileName = "output/5-imperfect.txt"
+
+---- 6-imperfect
+--sigmaPrimorial = sigmaAlterPrimorial
+--perfectness = 1%6 :: Rational
+--tryNumber = 6
+--fileName = "output/6-imperfect.txt"
 
 ---- OU-sigma
 --sigmaPrimorial = sigmaOrdUnitPrimorial
