@@ -10,6 +10,11 @@ import Math.NumberTheory.Primes.Factorisation
 
 import Perfect.Config
 
+ourFactorise = factorise'
+--ourFactorise = trialDivisionTo maxPrime
+--ourFactorSieve = factorSieve maxPrime
+--ourFactorise = sieveFactor ourFactorSieve
+
 primes :: [Integer]
 primes = takeWhile (<= maxPrime) Primes.primes
 
@@ -32,9 +37,8 @@ perf = 1%1
 
 wall brs prs = wall' where
   wall' = concatMap f where
-    prsSorted = sortBy cmp prs where
-      cmp = comparing (\p -> (length $ (Map.!) brs p, p))
-    bestPrimeDivisor n = head $ filter (\p -> n`mod`p==0) prsSorted ++ [0]
+    bestPrimeDivisor n = minimumBy cmp (map fst $ ourFactorise n) where
+      cmp = comparing (\p -> length $ (Map.!) brs p)
     f (ratio, n)
       | ratio==1 = [(ratio, n)]
       -- | isSimpleProd (1/ratio) && gcd n num == 1 = [(1, n*num)]
@@ -54,4 +58,4 @@ isSimpleProd ratio = sigmaN den == num where
   num = numerator ratio
   den = denominator ratio
 
-sigmaN n = product $ map (\(p,a)->sigmaPrimorial p (fromIntegral a)) (factorise' n)
+sigmaN n = product $ map (\(p,a)->sigmaPrimorial p (fromIntegral a)) (ourFactorise n)

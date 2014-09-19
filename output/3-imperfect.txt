@@ -27,15 +27,12 @@
 1881532800
 2082137400
 2147450880
-
-Following 6 terms were found by Zhou and Zhu:
-3094761600
-7660224000
-45096468480
-45807022800
-74547345600
-76324550400
-
+3094761600 (found by Zhou and Zhu)
+7660224000 (found by Zhou and Zhu)
+45096468480 (found by Zhou and Zhu)
+45807022800 (found by Zhou and Zhu)
+74547345600 (found by Zhou and Zhu)
+76324550400 (found by Zhou and Zhu)
 566341372800 (found by D. Johnson)
 676447027200 (found by D. Johnson)
 1265637895200
