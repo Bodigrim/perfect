@@ -17,4 +17,4 @@ tryN n = tryGen brs prs (start n) where
   prs = filter (\p -> n`mod`p/=0) primes
   brs = Map.filterWithKey (\p -> \_ -> n`mod`p/=0)  bricks
 
-printer (a, b) = if {-b`mod`9==0 ||-} b`mod`25==0 then [] else [(-1%1, b)]
+printer (a, b) = if b`mod`49==0 then [] else [(-1%1, b)]
