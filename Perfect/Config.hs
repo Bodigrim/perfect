@@ -3,7 +3,7 @@ module Perfect.Config where
 import Data.Ratio
 import Perfect.Sigmas
 
-maxPrime = 10000 :: Integer
+maxPrime = 100000 :: Integer
 maxPower = 100  :: Integer
 --maxPrimorial = 2^32 :: Integer
 
@@ -25,11 +25,11 @@ maxPower = 100  :: Integer
 --tryNumber = 6
 --fileName = "output/exp-unit.txt"
 
--- me-perfect
-sigmaPrimorial = sigmaModExpPrimorial
-perfectness = 2%1 :: Rational
-tryNumber = 6
-fileName = "output/me-perfect.txt"
+---- me-perfect
+--sigmaPrimorial = sigmaModExpPrimorial
+--perfectness = 2%1 :: Rational
+--tryNumber = 6
+--fileName = "output/me-perfect.txt"
 
 ---- sigma(n)/n = 5/2
 --sigmaPrimorial = sigmaUsualPrimorial
@@ -102,3 +102,21 @@ fileName = "output/me-perfect.txt"
 --perfectness = 2%1
 --tryNumber = 6
 --fileName = "output/inf-perfect.txt"
+
+-- Inf-3-sigma
+sigmaPrimorial = sigmaInfPrimorial
+perfectness = 3%1
+tryNumber = 6
+fileName = "output/inf-3-perfect.txt"
+
+---- Inf-4-sigma
+--sigmaPrimorial = sigmaInfPrimorial
+--perfectness = 4%1
+--tryNumber = 6
+--fileName = "output/inf-4-perfect.txt"
+
+---- Inf-5-sigma
+--sigmaPrimorial = sigmaInfPrimorial
+--perfectness = 5%1
+--tryNumber = 6
+--fileName = "output/inf-5-perfect.txt"
