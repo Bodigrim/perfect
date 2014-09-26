@@ -5,8 +5,8 @@ import Control.Parallel.Strategies
 import Data.Ratio
 import Control.DeepSeq
 
-import Perfect.Wall
-import Perfect.Config
+import Perfect.Wall (primes, bricks, wall)
+import Perfect.Config (perfectness)
 
 tryGen brs prs start = concat (map (\x -> printer x ++ wall brs prs [x]) start `using` parList rseq)
 

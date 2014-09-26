@@ -1,6 +1,7 @@
-import Perfect.Tries
-import Perfect.Config
+import Perfect.Tries (tryN)
+import Perfect.Config (tryNumber, fileName)
 import Data.Ratio
+import Perfect.Wall (primes, bricks, wall)
 
 main =
   --mapM (\(_,a) ->  try

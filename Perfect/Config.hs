@@ -1,122 +1,29 @@
-module Perfect.Config where
+module Perfect.Config (maxPrime, maxPower, sigmaPrimorial, perfectness, tryNumber, fileName) where
 
 import Data.Ratio
 import Perfect.Sigmas
 
-maxPrime = 100000 :: Integer
+maxPrime = 10000 :: Integer
 maxPower = 100  :: Integer
---maxPrimorial = 2^32 :: Integer
+config = infinitary 3
 
----- Mod-exp-inf-perfect
---sigmaPrimorial = sigmaModExpInfPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 6
---fileName = "output/mod-exp-inf.txt"
+modExp    = (sigmaModExpPrimorial,    2%1, 6, "output/mod-exp.txt"    )
+modExpInf = (sigmaModExpInfPrimorial, 2%1, 6, "output/mod-exp-inf.txt")
+expInf    = (sigmaExpInfPrimorial,    2%1, 6, "output/exp-inf.txt"    )
+expUnit   = (sigmaExpUnitPrimorial,   2%1, 6, "output/exp-unit.txt"   )
 
----- Exp-inf-perfect
---sigmaPrimorial = sigmaExpInfPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 6
---fileName = "output/exp-inf.txt"
+hemiperfect n = (sigmaUsualPrimorial, n%2, 2, "output/" ++ show n ++ "-halfs-perfect.txt")
 
----- Exp-unit-perfect
---sigmaPrimorial = sigmaExpUnitPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 6
---fileName = "output/exp-unit.txt"
+imperfect n = (sigmaAlterPrimorial, 1%n, m n, "output/" ++ show n ++ "-imperfect.txt") where
+	m 5 = 30
+	m 3 = 6
+	m 6 = 6
+	m _ = 2
 
----- me-perfect
---sigmaPrimorial = sigmaModExpPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 6
---fileName = "output/me-perfect.txt"
+ouSigma   = (sigmaOrdUnitPrimorial, 2%1, 2, "output/ou-perfect.txt"  )
+uoSigma   = (sigmaUnitOrdPrimorial, 2%1, 6, "output/uo-perfect.txt"  )
+usupSigma = (sigmaUSUPPrimorial,    1%1, 2, "output/usup-perfect.txt")
 
----- sigma(n)/n = 5/2
---sigmaPrimorial = sigmaUsualPrimorial
---perfectness = 5%2
---tryNumber = 2
---fileName = "output/5-halfs-perfect.txt"
+infinitary n = (sigmaInfPrimorial, n%1, 6, "output/inf-" ++ show n ++ "-perfect.txt")
 
----- sigma(n)/n = 3
---sigmaPrimorial = sigmaUsualPrimorial
---perfectness = 17%2
---tryNumber = 2
---fileName = "output/17-halfs-perfect.txt"
-
----- sigma(n)/n = 7/2
---sigmaPrimorial = sigmaUsualPrimorial
---perfectness = 7%2
---tryNumber = 6
---fileName = "output/7-halfs-perfect.txt"
-
----- 2-imperfect
---sigmaPrimorial = sigmaAlterPrimorial
---perfectness = 1%2 :: Rational
---tryNumber = 2
---fileName = "output/2-imperfect.txt"
-
--- 3-imperfect
---sigmaPrimorial = sigmaAlterPrimorial
---perfectness = 1%3 :: Rational
---tryNumber = 6
---fileName = "output/3-imperfect.txt"
-
----- 4-imperfect "Now 576460752303423488"
---sigmaPrimorial = sigmaAlterPrimorial
---perfectness = 1%4 :: Rational
---tryNumber = 2
---fileName = "output/4-imperfect.txt"
-
----- 5-imperfect
---sigmaPrimorial = sigmaAlterPrimorial
---perfectness = 1%5 :: Rational
---tryNumber = 30
---fileName = "output/5-imperfect.txt"
-
----- 6-imperfect
---sigmaPrimorial = sigmaAlterPrimorial
---perfectness = 1%6 :: Rational
---tryNumber = 6
---fileName = "output/6-imperfect.txt"
-
----- OU-sigma
---sigmaPrimorial = sigmaOrdUnitPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 2
---fileName = "output/ou-perfect.txt"
-
----- UO-sigma
---sigmaPrimorial = sigmaUnitOrdPrimorial
---perfectness = 2%1 :: Rational
---tryNumber = 6
---fileName = "output/uo-perfect.txt"
-
----- USUP-sigma
---sigmaPrimorial = sigmaUSUPPrimorial
---perfectness = 1%1 :: Rational
---tryNumber = 2
---fileName = "output/usup-perfect.txt"
-
----- Inf-sigma
---sigmaPrimorial = sigmaInfPrimorial
---perfectness = 2%1
---tryNumber = 6
---fileName = "output/inf-perfect.txt"
-
--- Inf-3-sigma
-sigmaPrimorial = sigmaInfPrimorial
-perfectness = 3%1
-tryNumber = 6
-fileName = "output/inf-3-perfect.txt"
-
----- Inf-4-sigma
---sigmaPrimorial = sigmaInfPrimorial
---perfectness = 4%1
---tryNumber = 6
---fileName = "output/inf-4-perfect.txt"
-
----- Inf-5-sigma
---sigmaPrimorial = sigmaInfPrimorial
---perfectness = 5%1
---tryNumber = 6
---fileName = "output/inf-5-perfect.txt"
+(sigmaPrimorial, perfectness, tryNumber, fileName) = config
