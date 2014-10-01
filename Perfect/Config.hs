@@ -26,4 +26,5 @@ usupSigma = (sigmaUSUPPrimorial,    1%1, 2, "output/usup-perfect.txt")
 
 infinitary n = (sigmaInfPrimorial, n%1, 6, "output/inf-" ++ show n ++ "-perfect.txt")
 
+tryNumber :: Int
 (sigmaPrimorial, perfectness, tryNumber, fileName) = config
