@@ -2,9 +2,12 @@ import Perfect.Tries (tryN)
 import Perfect.Config (tryNumber, fileName)
 import Data.Ratio
 import Perfect.Wall (primes, bricks, wall)
+import Perfect.Types (FactRat, (%%))
+
+printer :: Either (FactRat, Integer) Integer -> IO()
+printer (Left (_, a)) = appendFile fileName (show a ++ "\n")
+printer (Right a) = print ("Now " ++ show a)
 
 main =
-  --mapM (\(_,a) ->  try
-  mapM_ (\(r,a) -> if r/= -1%1 then appendFile fileName (show a ++ "\n") else print ("Now " ++ show a)) (tryN tryNumber)
-  --mapM (\(r,a) -> if r/= -1%1 then print a else print ("Now " ++ show a)) (tryN tryNumber)
+  mapM_ printer (tryN tryNumber)
 
