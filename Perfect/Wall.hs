@@ -23,25 +23,25 @@ ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
   -- If sigma on primorials contains primes > maxPrime it cannot be cancelled out
   -- Such elements can be safely removed
   ratios' :: [(Integer, Integer)]
-  ratios' = filter (\(a,_) -> pred a) ratios'' where
-    pred n
+  ratios' = filter (\(a,_) -> predicate a) ratios'' where
+    predicate n
       | gcd prod n == 1 = False
-      | otherwise = pred (n `div` gcd prod n)
+      | otherwise = predicate (n `div` gcd prod n)
     prod = product (map fromIntegral primes)
 
 
 bricks :: Map.IntMap [(FactRat, Integer)]
 bricks = Map.fromSet ratios (Set.fromList primes)
 
-bricksLength :: Map.IntMap Int
-bricksLength = Map.map length bricks
+--bricksLength :: Map.IntMap Int
+--bricksLength = Map.map length bricks
 
 bestPrimeDivisor :: [(Int, Int)] -> (Int, Int)
 bestPrimeDivisor = minimumBy (comparing f) where
   f p = length $ (Map.!) bricks (fst p)
 
-wall :: Map.IntMap [(FactRat, Integer)] -> [Int] -> [(FactRat, Integer)] -> [(FactRat, Integer)]
-wall brs prs = wall' where
+wall :: Map.IntMap [(FactRat, Integer)] -> [(FactRat, Integer)] -> [(FactRat, Integer)]
+wall brs = wall' where
   wall' = concatMap f where
     f (ratio, n)
       | eq1 ratio = [(ratio, n)]
