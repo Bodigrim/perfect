@@ -1,4 +1,4 @@
-module Perfect.Wall (primes, bricks, wall, bestPrimeDivisor) where
+module Perfect.Wall (ratios, primes, bricks, wall, bestPrimeDivisor) where
 
 import Prelude hiding ((**))
 import Data.Ord
@@ -8,20 +8,22 @@ import qualified Data.IntSet as Set
 import qualified Math.NumberTheory.Primes.Sieve as Primes
 
 import Perfect.Config (maxPrime, maxPower, sigmaPrimorial)
-import Perfect.Types (FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
+import Perfect.Types (FactorizedRatio, FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
 
 primes :: [Int]
 primes = map fromInteger $ takeWhile (<= maxPrime) Primes.primes
 
-ratios :: Int -> [(FactRat, Integer)]
+ratios :: FactorizedRatio a => Int -> [(a, Integer)]
 ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
+  p :: Integer
   p = fromIntegral p'
   -- Initial set of sigma on primorials
+  ratios'' :: [(Integer, Integer)]
   ratios'' = [ (sigmaPrimorial p a, p^a) | a <- [1..maxPower] ]
   -- If sigma on primorials contains primes > maxPrime it cannot be cancelled out
-  -- Thus such elements should be removed
+  -- Such elements can be safely removed
+  ratios' :: [(Integer, Integer)]
   ratios' = filter (\(a,_) -> pred a) ratios'' where
-    pred 1 = True
     pred n
       | gcd prod n == 1 = False
       | otherwise = pred (n `div` gcd prod n)

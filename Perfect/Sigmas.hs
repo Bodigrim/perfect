@@ -3,6 +3,8 @@ module Perfect.Sigmas where
 import Data.Bits
 import Math.NumberTheory.Primes.Sieve
 
+type SigmaF = Integer -> Integer -> Integer
+
 sigmaUsualPrimorial p a = sum [ p^b | b<-[0..a]]
 
 sigmaAlterPrimorial p a = sum [ p^b * (-1)^(a-b) | b<-[0..a]]
@@ -14,19 +16,19 @@ sigmaExpUnitPrimorial p a = sum [ p^b | b<-[1..a], a`mod`b == 0 && gcd b (a`div`
 sigmaUnitPrimorial p a = if a==0 then 1 else p^a + 1
 sigmaNonUnitPrimorial p a = sigmaUsualPrimorial p a - sigmaUnitPrimorial p a
 
-sigmaInfPrimorial :: Integer -> Integer -> Integer
+sigmaInfPrimorial :: SigmaF
 sigmaInfPrimorial p a = sum [ p^b | b<-[0..a], pred b] where
 	pred b = a .|. complement b == -1
 
-sigmaExpInfPrimorial :: Integer -> Integer -> Integer
+sigmaExpInfPrimorial :: SigmaF
 sigmaExpInfPrimorial p a = sum [ p^b | b<-[1..a], isInfDivisor a b]
 
-sigmaModExpInfPrimorial :: Integer -> Integer -> Integer
+sigmaModExpInfPrimorial :: SigmaF
 sigmaModExpInfPrimorial p a = sum [ p^b | b<-[0..a], isInfDivisor (a+1) (b+1)]
 
 isInfDivisor n m = n `mod` m == 0 && and [pred (maxPrimorial p n) (maxPrimorial p m) | p<-ps] where
 	ps = takeWhile (<= m) primes
-	maxPrimorial :: Integer -> Integer -> Integer
+	maxPrimorial :: SigmaF
 	maxPrimorial p 0 = 0
 	maxPrimorial p x = if x`mod`p==0 then 1 + maxPrimorial p (x`div`p) else 0
 	pred a b = a .|. complement b == -1

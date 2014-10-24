@@ -7,7 +7,7 @@ maxPrime = 100000
 maxPower = 100
 config = imperfect 3
 
-type PerfectConfig = (Integer -> Integer -> Integer, FactRat, Int, String)
+type PerfectConfig = (SigmaF, FactRat, Int, String)
 
 modExp    = (sigmaModExpPrimorial,    2%%1, 6, "output/mod-exp.txt"    ) :: PerfectConfig
 modExpInf = (sigmaModExpInfPrimorial, 2%%1, 6, "output/mod-exp-inf.txt") :: PerfectConfig
