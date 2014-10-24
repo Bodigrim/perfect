@@ -23,8 +23,9 @@ ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
   -- If sigma on primorials contains primes > maxPrime it cannot be cancelled out
   -- Such elements can be safely removed
   ratios' :: [(Integer, Integer)]
-  ratios' = filter (\(a,_) -> predicate a) ratios'' where
+  ratios' = filter (predicate . fst) ratios'' where
     predicate n
+      | n==1 = True
       | gcd prod n == 1 = False
       | otherwise = predicate (n `div` gcd prod n)
     prod = product (map fromIntegral primes)
