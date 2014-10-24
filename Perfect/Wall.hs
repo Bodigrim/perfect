@@ -1,19 +1,14 @@
 module Perfect.Wall (primes, bricks, wall, bestPrimeDivisor) where
 
 import Prelude hiding ((**))
+import Data.Ord
+import Data.List
 import qualified Data.IntMap.Strict as Map
 import qualified Data.IntSet as Set
-import qualified Data.Numbers.Primes as Primes
-import Control.Arrow
-import Data.Ord
-import Data.Ratio
-import Data.List
-import Math.NumberTheory.Primes.Factorisation
+import qualified Math.NumberTheory.Primes.Sieve as Primes
 
 import Perfect.Config (maxPrime, maxPower, sigmaPrimorial)
 import Perfect.Types (FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
-
-ourFactorise = factorise'
 
 primes :: [Int]
 primes = map fromInteger $ takeWhile (<= maxPrime) Primes.primes
@@ -53,6 +48,3 @@ wall brs prs = wall' where
       | otherwise = wall' [(ratio**rat, n*pa) | (rat,pa)<-pile] where
         pile = dropWhile (\(_,pa) -> pa < (fromIntegral p)^a) ((Map.!) brs p)
         (p, a) = bestPrimeDivisor $ numerFactors ratio
-
-sigmaN :: Integer -> Integer
-sigmaN n = product $ map (\(p,a)->sigmaPrimorial p (fromIntegral a)) (ourFactorise n)

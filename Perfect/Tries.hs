@@ -3,8 +3,6 @@ module Perfect.Tries where
 import Prelude hiding ((**))
 import qualified Data.IntMap.Strict as Map
 import Control.Parallel.Strategies
-import Data.Ratio
-import Control.DeepSeq
 
 import Perfect.Types (FactRat, (%%), (**), (\\))
 import Perfect.Wall (primes, bricks, wall)

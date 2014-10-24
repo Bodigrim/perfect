@@ -1,7 +1,7 @@
 module Perfect.Sigmas where
 
 import Data.Bits
-import qualified Data.Numbers.Primes as Primes
+import Math.NumberTheory.Primes.Sieve
 
 sigmaUsualPrimorial p a = sum [ p^b | b<-[0..a]]
 
@@ -25,7 +25,7 @@ sigmaModExpInfPrimorial :: Integer -> Integer -> Integer
 sigmaModExpInfPrimorial p a = sum [ p^b | b<-[0..a], isInfDivisor (a+1) (b+1)]
 
 isInfDivisor n m = n `mod` m == 0 && and [pred (maxPrimorial p n) (maxPrimorial p m) | p<-ps] where
-	ps = takeWhile (<= m) Primes.primes
+	ps = takeWhile (<= m) primes
 	maxPrimorial :: Integer -> Integer -> Integer
 	maxPrimorial p 0 = 0
 	maxPrimorial p x = if x`mod`p==0 then 1 + maxPrimorial p (x`div`p) else 0

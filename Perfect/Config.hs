@@ -1,12 +1,11 @@
 module Perfect.Config (maxPrime, maxPower, sigmaPrimorial, perfectness, tryNumber, fileName) where
 
-import Data.Ratio
 import Perfect.Sigmas
 import Perfect.Types (FactRat, (%%))
 
-maxPrime = 66000
+maxPrime = 100000
 maxPower = 100
-config = infinitary 3
+config = imperfect 3
 
 type PerfectConfig = (Integer -> Integer -> Integer, FactRat, Int, String)
 
