@@ -6,6 +6,7 @@ import qualified Data.IntMap.Strict as Map
 import Data.Ratio
 import Math.NumberTheory.Primes.Factorisation
 
+ourFactorise :: Integer -> [(Integer, Int)]
 ourFactorise = factorise'
 --ourFactorise = trialDivisionTo maxPrime
 --ourFactorSieve = factorSieve maxPrime

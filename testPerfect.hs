@@ -70,11 +70,11 @@ types4 = types4' ++ (map (doubleArgs2 (2^32)) types2) -- ++ (map(doubleArgs2 (2^
 types8 = (map (doubleArgs2 (2^32)) types4') -- ++ (map(doubleArgs2 (2^64)) types4)
 
 main = do
-  --mapM_ quickCheck types2
-  --mapM_ quickCheck types4
-  --mapM_ quickCheck types8
-  --mapM_ (smallCheck 100) types2
-  --mapM_ (smallCheck 10) types4
-  --mapM_ (smallCheck 3) types8
+  mapM_ quickCheck types2
+  mapM_ quickCheck types4
+  mapM_ quickCheck types8
+  mapM_ (smallCheck 100) types2
+  mapM_ (smallCheck 10) types4
+  mapM_ (smallCheck 3) types8
   smallCheck 100 propBricks
   quickCheck propBricks

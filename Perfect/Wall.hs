@@ -34,20 +34,20 @@ ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
 bricks :: Map.IntMap [(FactRat, Integer)]
 bricks = Map.fromSet ratios (Set.fromList primes)
 
---bricksLength :: Map.IntMap Int
---bricksLength = Map.map length bricks
+bricksLength :: Map.IntMap Int
+bricksLength = Map.map length bricks
 
 bestPrimeDivisor :: [(Int, Int)] -> (Int, Int)
-bestPrimeDivisor = minimumBy (comparing f) where
-  f p = length $ (Map.!) bricks (fst p)
+bestPrimeDivisor = minimumBy (comparing f) {-. filter (g . fst)-} where
+  f p = (Map.!) bricksLength (fst p)
+  --g p = tryNumber`mod`p /= 0
 
-wall :: Map.IntMap [(FactRat, Integer)] -> [(FactRat, Integer)] -> [(FactRat, Integer)]
-wall brs = wall' where
-  wall' = concatMap f where
-    f (ratio, n)
-      | eq1 ratio = [(ratio, n)]
-      | numerEq1 ratio = []
-      | not (numerCoprime ratio n) = []
-      | otherwise = wall' [(ratio**rat, n*pa) | (rat,pa)<-pile] where
-        pile = dropWhile (\(_,pa) -> pa < (fromIntegral p)^a) ((Map.!) brs p)
-        (p, a) = bestPrimeDivisor $ numerFactors ratio
+wall :: [(FactRat, Integer)] -> [(FactRat, Integer)]
+wall = concatMap f where
+  f (ratio, n)
+    | eq1 ratio = [(ratio, n)]
+    | numerEq1 ratio = []
+    | not (numerCoprime ratio n) = []
+    | otherwise = wall [(ratio**rat, n*pa) | (rat,pa)<-pile] where
+      pile = dropWhile (\(_,pa) -> pa < (fromIntegral p)^a) ((Map.!) bricks p)
+      (p, a) = bestPrimeDivisor $ numerFactors ratio
