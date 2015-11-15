@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -fno-warn-unused-binds #-}
+
 module Perfect.Sigmas where
 
 import Data.Bits
@@ -37,11 +39,11 @@ sigmaModExpInfPrimorial p a = sum [ p^b | b<-[0..a], isInfDivisor (a+1) (b+1)]
 
 isInfDivisor :: Integer -> Integer -> Bool
 isInfDivisor n m = n `mod` m == 0 && and [predicate (maxPrimorial p n) (maxPrimorial p m) | p<-ps] where
-	ps = takeWhile (<= m) primes
-	maxPrimorial :: SigmaF
-	maxPrimorial _ 0 = 0
-	maxPrimorial p x = if x`mod`p==0 then 1 + maxPrimorial p (x`div`p) else 0
-	predicate a b = a .|. complement b == -1
+  ps = takeWhile (<= m) primes
+  maxPrimorial :: SigmaF
+  maxPrimorial _ 0 = 0
+  maxPrimorial p x = if x`mod`p==0 then 1 + maxPrimorial p (x`div`p) else 0
+  predicate a b = a .|. complement b == -1
 
 sigmaOrdUnitPrimorial :: SigmaF
 sigmaOrdUnitPrimorial 2 = sigmaUsualPrimorial 2

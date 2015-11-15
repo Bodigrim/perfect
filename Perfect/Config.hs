@@ -1,3 +1,5 @@
+{-# OPTIONS_GHC -fno-warn-unused-binds #-}
+
 module Perfect.Config (maxPrime, maxPower, sigmaPrimorial, perfectness, tryNumber, fileName) where
 
 import Perfect.Sigmas
@@ -27,10 +29,10 @@ hemiperfect n = (sigmaUsualPrimorial, n%%2, 2, "output/" ++ show n ++ "-halfs-pe
 
 imperfect :: Integer -> PerfectConfig
 imperfect n = (sigmaAlterPrimorial, 1%%n, m n, "output/" ++ show n ++ "-imperfect.txt") where
-	m 5 = 30
-	m 3 = 6
-	m 6 = 6
-	m _ = 2
+  m 5 = 30
+  m 3 = 6
+  m 6 = 6
+  m _ = 2
 
 ouSigma :: PerfectConfig
 ouSigma   = (sigmaOrdUnitPrimorial, 2%%1, 2, "output/ou-perfect.txt"  )

@@ -2,6 +2,7 @@
 module Perfect.Types where
 
 import Prelude hiding ((**))
+import Control.Arrow
 import qualified Data.IntMap.Strict as Map
 import Data.Ratio
 import Math.NumberTheory.Primes.Factorisation
@@ -26,23 +27,27 @@ instance FactorizedRatio Rational where
   (%%) = ( % )
   (**) = ( * )
   (\\) = ( / )
-  numerFactors = map (\(x, y)->(fromInteger x, y)) . (filter ((/=1) . fst)) . ourFactorise . numerator
+  numerFactors = map (first fromInteger) . filter ((/=1) . fst) . ourFactorise . numerator
   eq1 r = numerator r == 1 && denominator r == 1
   numerEq1 r = numerator r == 1
   numerCoprime r m = gcd (numerator r) m == 1
   numDen r = (numerator r, denominator r)
 
-data Prefactored = Prefactored (Map.IntMap Int) (Map.IntMap Int)
+data Prefactored = Prefactored !(Map.IntMap Int) !(Map.IntMap Int)
   deriving (Show)
 
 instance FactorizedRatio Prefactored where
   n %% d = Prefactored nf df where
-    r = n % d
-    f = Map.fromList . (map (\(x,y)->(fromInteger x, y))) . (filter ((/=1) . fst)) . ourFactorise
-    nf = f $ numerator r
-    df = f $ denominator r
+    filter1 ((1,_):xs) = xs
+    filter1 xs         = xs
 
-  (Prefactored n1 d1) ** (Prefactored n2 d2) = Prefactored n d where
+    factMap = Map.fromAscList . map (first fromInteger) . filter1 . ourFactorise
+
+    g = gcd n d
+    nf = factMap (n `div` g)
+    df = factMap (d `div` g)
+
+{-  (Prefactored n1 d1) ** (Prefactored n2 d2) = Prefactored n d where
     n' = Map.unionWith (+) n1 n2
     d' = Map.unionWith (+) d1 d2
     cancel = Map.intersectionWith min n' d'
@@ -50,8 +55,22 @@ instance FactorizedRatio Prefactored where
     d = Map.differenceWith f d' cancel
     f a b | a==b = Nothing
           | otherwise = Just (a-b)
+-}
 
-  (Prefactored n1 d1) \\ (Prefactored n2 d2) = (Prefactored n1 d1) ** (Prefactored d2 n2)
+  (Prefactored n1 d1) ** (Prefactored n2 d2) = Prefactored n d where
+    n1' = Map.differenceWith f n1 d2
+    d2' = Map.differenceWith f d2 n1
+    n2' = Map.differenceWith f n2 d1
+    d1' = Map.differenceWith f d1 n2
+
+    n = Map.unionWith (+) n1' n2'
+    d = Map.unionWith (+) d1' d2'
+
+    f a b
+      | a > b     = Just (a-b)
+      | otherwise = Nothing
+
+  (Prefactored n1 d1) \\ (Prefactored n2 d2) = Prefactored n1 d1 ** Prefactored d2 n2
 
   numerFactors (Prefactored n _) = Map.toList n
 
@@ -59,10 +78,10 @@ instance FactorizedRatio Prefactored where
 
   numerEq1 (Prefactored n _) = Map.null n
 
-  numerCoprime (Prefactored n _) m = all (\d -> m`mod`(toInteger d) /= 0) (Map.keys n)
+  numerCoprime (Prefactored n _) m = all (\d -> m `mod` toInteger d /= 0) (Map.keys n)
 
   numDen (Prefactored n d) = (f n, f d) where
-    f xs = Map.foldl (*) 1 $ Map.mapWithKey (\k -> \a -> (toInteger k)^a) xs
+    f = Map.foldlWithKey' (\acc k a -> acc * toInteger k ^ a) 1
 
 type FactRat = Prefactored
 

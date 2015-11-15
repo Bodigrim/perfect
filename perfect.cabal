@@ -1,0 +1,24 @@
+name:                perfect
+version:             0.1.0.0
+synopsis:            Perfect numbers
+license:             GPL-3
+author:              Andrew Lelechenko
+maintainer:          andrew.lelechenko@gmail.com
+category:            Math
+build-type:          Simple
+cabal-version:       >=1.10
+
+executable perfect
+  main-is:             perfect.hs
+  build-depends:       base >=4 && <5
+                     , containers
+                     , arithmoi
+                     , parallel
+  default-language:    Haskell2010
+  ghc-options:         -Wall -fno-warn-type-defaults
+
+  other-modules:       Perfect.Config
+                     , Perfect.Sigmas
+                     , Perfect.Tries
+                     , Perfect.Types
+                     , Perfect.Wall
