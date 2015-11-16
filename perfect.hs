@@ -1,10 +1,7 @@
 import Perfect.Tries (tryN)
-import Perfect.Config (tryNumber, fileName)
+import Perfect.Config (tryNumber, fileName, logName)
 
 import System.Directory
-
-logName :: String
-logName = fileName ++ ".last"
 
 printer :: Either Integer Integer -> IO()
 printer (Left  a) = do
