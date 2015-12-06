@@ -11,13 +11,11 @@ import Perfect.Config (perfectness)
 tryGen :: [(FactRat, Integer)] -> [Either Integer Integer]
 tryGen start = concat (map mapper start `using` parList rseq) where
   mapper :: (FactRat, Integer) -> [Either Integer Integer]
-  mapper x = Right (snd x) : map Left (wall x)
+  mapper x = map Left (wall x) ++ [Right (snd x)]
 
-tryN :: Int -> Maybe Integer -> [Either Integer Integer]
-tryN n lastPos = tryGen $ skip $ start n where
-  skip = case lastPos of
-    Nothing -> id
-    Just l  -> dropWhile ((/= l) . snd)
+tryN :: Int -> [Integer] -> [Either Integer Integer]
+tryN n alreadyProcessed = tryGen $ skip $ start n where
+  skip = filter ((`notElem` alreadyProcessed) . snd)
 
   start 1 = [((1%%1)\\perfectness, 1)]
   start m = [ (rat1**rat2, pa1*pa2) | (rat2, pa2) <- (Map.!) bricks p, (rat1, pa1) <- start (m`div`p)] where

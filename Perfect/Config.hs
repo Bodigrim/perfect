@@ -11,7 +11,7 @@ fileName :: String
 fileName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".txt"
 
 logName :: String
-logName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".last"
+logName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".log"
 
 maxPrime :: Integer
 maxPower :: Integer
