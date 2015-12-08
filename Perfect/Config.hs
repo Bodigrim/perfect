@@ -2,10 +2,12 @@
 
 module Perfect.Config (maxPrime, maxPower, sigmaPrimorial, perfectness, tryNumber, fileName, logName) where
 
+import Numeric.Natural
+
 import Perfect.Sigmas
 import Perfect.Types (FactRat, (%%))
 
-type PerfectConfig = (SigmaF, FactRat, Int, String)
+type PerfectConfig = (SigmaF, FactRat, Word, String)
 
 fileName :: String
 fileName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".txt"
@@ -13,8 +15,8 @@ fileName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPow
 logName :: String
 logName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".log"
 
-maxPrime :: Integer
-maxPower :: Integer
+maxPrime :: Natural
+maxPower :: Natural
 config :: PerfectConfig
 
 maxPrime = 2000
@@ -30,10 +32,10 @@ expInf    = (sigmaExpInfPrimorial,    2%%1, 6, "exp-inf"    )
 expUnit :: PerfectConfig
 expUnit   = (sigmaExpUnitPrimorial,   2%%1, 6, "exp-unit"   )
 
-hemiperfect :: Integer -> PerfectConfig
+hemiperfect :: Natural -> PerfectConfig
 hemiperfect n = (sigmaUsualPrimorial, n%%2, 2, show n ++ "-halfs-perfect")
 
-imperfect :: Integer -> PerfectConfig
+imperfect :: Natural -> PerfectConfig
 imperfect n = (sigmaAlterPrimorial, 1%%n, m n, show n ++ "-imperfect") where
   m 5 = 30
   m 3 = 6
@@ -47,11 +49,11 @@ uoSigma   = (sigmaUnitOrdPrimorial, 2%%1, 6, "uo-perfect"  )
 usupSigma :: PerfectConfig
 usupSigma = (sigmaUSUPPrimorial,    1%%1, 2, "usup-perfect")
 
-infinitary :: Integer -> PerfectConfig
+infinitary :: Natural -> PerfectConfig
 infinitary n = (sigmaInfPrimorial, n%%1, 6, "inf-" ++ show n ++ "-perfect")
 
 sigmaPrimorial :: SigmaF
 perfectness    :: FactRat
-tryNumber      :: Int
+tryNumber      :: Word
 filePrefix     :: String
 (sigmaPrimorial, perfectness, tryNumber, filePrefix) = config

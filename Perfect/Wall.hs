@@ -3,38 +3,40 @@
 module Perfect.Wall (ratios, primes, bricks, wall, bestPrimeDivisor) where
 
 import Prelude hiding ((**))
+import Control.Arrow
 import qualified Data.IntMap.Strict as Map
-import qualified Data.IntSet as Set
 import qualified Math.NumberTheory.Primes.Sieve as Primes
+import Numeric.Natural
+import GHC.Natural
 
 import Perfect.Config (maxPrime, maxPower, sigmaPrimorial)
-import Perfect.Types (FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
+import Perfect.Types
 
-primes :: [Int]
-primes = map fromInteger $ takeWhile (<= maxPrime) Primes.primes
+primes :: [Word]
+primes = map fromIntegral $ takeWhile (<= fromIntegral maxPrime) Primes.primes
 
-ratios :: Int -> [(FactRat, Integer)]
+ratios :: Word -> [(FactRat, Natural)]
 ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
-  p :: Integer
-  p = fromIntegral p'
+  p :: Natural
+  p = wordToNatural p'
   -- Initial set of sigma on primorials
-  ratios'' :: [(Integer, Integer)]
+  ratios'' :: [(Natural, Natural)]
   ratios'' = [ (sigmaPrimorial p a, p^a) | a <- [1..maxPower] ]
   -- If sigma on primorials contains primes > maxPrime it cannot be cancelled out
   -- Such elements can be safely removed
-  ratios' :: [(Integer, Integer)]
+  ratios' :: [(Natural, Natural)]
   ratios' = filter (predicate prod . fst) ratios'' where
     predicate _ 1 = True
     predicate 1 _ = False
     predicate m n = (d == n) || predicate d (n `div` d)
       where
         d = gcd m n
-  prod :: Integer
-  prod = product (map fromIntegral primes)
+  prod :: Natural
+  prod = product (map wordToNatural primes)
 
 
-bricks :: Map.IntMap [(FactRat, Integer)]
-bricks = Map.fromSet ratios (Set.fromList primes)
+bricks :: Map.IntMap [(FactRat, Natural)]
+bricks = Map.fromAscList $ map (fromIntegral &&& ratios) primes
 
 bricksLength :: Map.IntMap Int
 bricksLength = Map.map length bricks
@@ -50,11 +52,11 @@ bestPrimeDivisor (h@(p,_):xs) = if lenAtP == 1 then h else go (lenAtP, h) xs
       where
         lenAtPP = (Map.!) bricksLength pp
 
-wall :: (FactRat, Integer) -> [Integer]
+wall :: (FactRat, Natural) -> [Natural]
 wall (!ratio, !n)
   | eq1 ratio = [n]
   | numerEq1 ratio = []
   | not (numerCoprime ratio n) = []
   | otherwise = concatMap wall [(ratio**rat, n*pa) | (rat,pa)<-pile] where
-    pile = dropWhile (\(_,pa) -> pa < fromIntegral p ^ a) ((Map.!) bricks p)
+    pile = dropWhile (\(_,pa) -> pa < intToNatural p ^ a) ((Map.!) bricks p)
     (p, a) = bestPrimeDivisor $ numerFactors ratio

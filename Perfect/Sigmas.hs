@@ -4,8 +4,9 @@ module Perfect.Sigmas where
 
 import Data.Bits
 import Math.NumberTheory.Primes.Sieve
+import Numeric.Natural
 
-type SigmaF = Integer -> Integer -> Integer
+type SigmaF = Natural -> Natural -> Natural
 
 sigmaUsualPrimorial :: SigmaF
 sigmaUsualPrimorial p a = sum [ p^b | b<-[0..a]]
@@ -37,9 +38,9 @@ sigmaExpInfPrimorial p a = sum [ p^b | b<-[1..a], isInfDivisor a b]
 sigmaModExpInfPrimorial :: SigmaF
 sigmaModExpInfPrimorial p a = sum [ p^b | b<-[0..a], isInfDivisor (a+1) (b+1)]
 
-isInfDivisor :: Integer -> Integer -> Bool
-isInfDivisor n m = n `mod` m == 0 && and [predicate (maxPrimorial p n) (maxPrimorial p m) | p<-ps] where
-  ps = takeWhile (<= m) primes
+isInfDivisor :: Natural -> Natural -> Bool
+isInfDivisor n m = n `mod` m == 0 && and [predicate (maxPrimorial p n) (maxPrimorial p m) | p <- ps] where
+  ps = map fromIntegral $ takeWhile (<= fromIntegral m) primes
   maxPrimorial :: SigmaF
   maxPrimorial _ 0 = 0
   maxPrimorial p x = if x`mod`p==0 then 1 + maxPrimorial p (x`div`p) else 0

@@ -1,4 +1,4 @@
-{-# LANGUAGE TypeSynonymInstances, FlexibleInstances #-}
+{-# LANGUAGE TypeSynonymInstances, FlexibleInstances, MagicHash #-}
 module Perfect.Types where
 
 import Prelude hiding ((**))
@@ -6,11 +6,15 @@ import Control.Arrow
 import qualified Data.IntMap.Strict as Map
 import Data.Monoid
 import Math.NumberTheory.Primes.Factorisation
+import Numeric.Natural
+import GHC.Natural
+import GHC.Prim
+import GHC.Exts
 
-ourFactorise :: Integer -> [(Int, Int)]
-ourFactorise = map (first fromInteger) . factorise'
+ourFactorise :: Natural -> [(Int, Int)]
+ourFactorise = map (first fromInteger) . factorise' . toInteger
 
-(%%) :: Integer -> Integer -> FactRat
+(%%) :: Natural -> Natural -> FactRat
 n %% d = nf <> fmap negate df
   where
     factMap 1 = mempty
@@ -35,13 +39,17 @@ eq1 = Map.null
 numerEq1 :: FactRat -> Bool
 numerEq1 = all (< 0)
 
-numerCoprime :: FactRat -> Integer -> Bool
-numerCoprime a m = getAll $ Map.foldMapWithKey (\p k -> All $ k < 0 || m `mod` toInteger p /= 0) a
+numerCoprime :: FactRat -> Natural -> Bool
+numerCoprime a m = getAll $ Map.foldMapWithKey (\p k -> All $ k < 0 || m `mod` intToNatural p /= 0) a
 
-numDen :: FactRat -> (Integer, Integer)
+numDen :: FactRat -> (Natural, Natural)
 numDen = (f *** f) . Map.partition (> 0) where
-  f = Map.foldlWithKey' (\acc k a -> acc * toInteger k ^ a) 1
+  f = Map.foldlWithKey' (\acc k a -> acc * intToNatural k ^ a) 1
 
 type FactRat = Map.IntMap Int
+
+intToNatural :: Int -> Natural
+-- intToNatural i | i<0 = error "Underflow"
+intToNatural (I# i#) = NatS# (int2Word# i#)
 
 

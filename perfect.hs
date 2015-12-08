@@ -2,8 +2,9 @@ import Perfect.Tries (tryN)
 import Perfect.Config (tryNumber, fileName, logName)
 
 import System.Directory
+import Numeric.Natural
 
-printer :: Either Integer Integer -> IO()
+printer :: Either Natural Natural -> IO()
 printer (Left  a) = do
   putStrLn ("Found " ++ show a)
   appendFile fileName (show a ++ "\n")
