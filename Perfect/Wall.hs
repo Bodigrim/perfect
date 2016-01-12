@@ -8,12 +8,12 @@ import qualified Data.IntSet as Set
 import qualified Math.NumberTheory.Primes.Sieve as Primes
 
 import Perfect.Config (maxPrime, maxPower, sigmaPrimorial)
-import Perfect.Types (FactorizedRatio, FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
+import Perfect.Types (FactRat, (%%), (**), numerFactors, eq1, numerEq1, numerCoprime)
 
 primes :: [Int]
 primes = map fromInteger $ takeWhile (<= maxPrime) Primes.primes
 
-ratios :: FactorizedRatio a => Int -> [(a, Integer)]
+ratios :: Int -> [(FactRat, Integer)]
 ratios p' = map (\(sigma, pa) -> (sigma %% pa, pa)) ratios' where
   p :: Integer
   p = fromIntegral p'

@@ -4,85 +4,44 @@ module Perfect.Types where
 import Prelude hiding ((**))
 import Control.Arrow
 import qualified Data.IntMap.Strict as Map
-import Data.Ratio
+import Data.Monoid
 import Math.NumberTheory.Primes.Factorisation
 
-ourFactorise :: Integer -> [(Integer, Int)]
-ourFactorise = factorise'
---ourFactorise = trialDivisionTo maxPrime
---ourFactorSieve = factorSieve maxPrime
---ourFactorise = sieveFactor ourFactorSieve
+ourFactorise :: Integer -> [(Int, Int)]
+ourFactorise = map (first fromInteger) . factorise'
 
-class FactorizedRatio a where
-  (%%) :: Integer -> Integer -> a
-  (**) :: a -> a -> a
-  (\\) :: a -> a -> a
-  numerFactors :: a -> [(Int, Int)]
-  eq1 :: a -> Bool
-  numerEq1 :: a -> Bool
-  numerCoprime :: a -> Integer -> Bool
-  numDen :: a -> (Integer, Integer)
-
-instance FactorizedRatio Rational where
-  (%%) = ( % )
-  (**) = ( * )
-  (\\) = ( / )
-  numerFactors = map (first fromInteger) . filter ((/=1) . fst) . ourFactorise . numerator
-  eq1 r = numerator r == 1 && denominator r == 1
-  numerEq1 r = numerator r == 1
-  numerCoprime r m = gcd (numerator r) m == 1
-  numDen r = (numerator r, denominator r)
-
-data Prefactored = Prefactored !(Map.IntMap Int) !(Map.IntMap Int)
-  deriving (Show)
-
-instance FactorizedRatio Prefactored where
-  n %% d = Prefactored nf df where
-    filter1 ((1,_):xs) = xs
-    filter1 xs         = xs
-
-    factMap = Map.fromAscList . map (first fromInteger) . filter1 . ourFactorise
+(%%) :: Integer -> Integer -> FactRat
+n %% d = nf <> fmap negate df
+  where
+    factMap 1 = mempty
+    factMap x = Map.fromAscList . ourFactorise $ x
 
     g = gcd n d
     nf = factMap (n `div` g)
     df = factMap (d `div` g)
 
-{-  (Prefactored n1 d1) ** (Prefactored n2 d2) = Prefactored n d where
-    n' = Map.unionWith (+) n1 n2
-    d' = Map.unionWith (+) d1 d2
-    cancel = Map.intersectionWith min n' d'
-    n = Map.differenceWith f n' cancel
-    d = Map.differenceWith f d' cancel
-    f a b | a==b = Nothing
-          | otherwise = Just (a-b)
--}
+(**) :: FactRat -> FactRat -> FactRat
+(**) = Map.mergeWithKey (\_ a b -> let ab = a + b in if ab == 0 then Nothing else Just ab) id id
 
-  (Prefactored n1 d1) ** (Prefactored n2 d2) = Prefactored n d where
-    n1' = Map.differenceWith f n1 d2
-    d2' = Map.differenceWith f d2 n1
-    n2' = Map.differenceWith f n2 d1
-    d1' = Map.differenceWith f d1 n2
+(\\) :: FactRat -> FactRat -> FactRat
+(\\) = Map.mergeWithKey (\_ a b -> let ab = a - b in if ab == 0 then Nothing else Just ab) id (fmap negate)
 
-    n = Map.unionWith (+) n1' n2'
-    d = Map.unionWith (+) d1' d2'
+numerFactors :: FactRat -> [(Int, Int)]
+numerFactors = Map.toList . Map.filter (> 0)
 
-    f a b
-      | a > b     = Just (a-b)
-      | otherwise = Nothing
+eq1 :: FactRat -> Bool
+eq1 = Map.null
 
-  (Prefactored n1 d1) \\ (Prefactored n2 d2) = Prefactored n1 d1 ** Prefactored d2 n2
+numerEq1 :: FactRat -> Bool
+numerEq1 = all (< 0)
 
-  numerFactors (Prefactored n _) = Map.toList n
+numerCoprime :: FactRat -> Integer -> Bool
+numerCoprime a m = getAll $ Map.foldMapWithKey (\p k -> All $ k < 0 || m `mod` toInteger p /= 0) a
 
-  eq1 (Prefactored n d) = Map.null n && Map.null d
+numDen :: FactRat -> (Integer, Integer)
+numDen = (f *** f) . Map.partition (> 0) where
+  f = Map.foldlWithKey' (\acc k a -> acc * toInteger k ^ a) 1
 
-  numerEq1 (Prefactored n _) = Map.null n
-
-  numerCoprime (Prefactored n _) m = all (\d -> m `mod` toInteger d /= 0) (Map.keys n)
-
-  numDen (Prefactored n d) = (f n, f d) where
-    f = Map.foldlWithKey' (\acc k a -> acc * toInteger k ^ a) 1
-
-type FactRat = Prefactored
+type FactRat = Map.IntMap Int
 
 
