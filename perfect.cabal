@@ -16,7 +16,7 @@ executable perfect
                      , parallel
                      , directory
   default-language:    Haskell2010
-  ghc-options:         -Wall -fno-warn-type-defaults -threaded
+  ghc-options:         -Wall -fno-warn-type-defaults -threaded -O2 -optc-O3
 
   other-modules:       Perfect.Config
                      , Perfect.Sigmas
