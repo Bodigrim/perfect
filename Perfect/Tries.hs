@@ -9,7 +9,7 @@ import Perfect.Wall (primes, bricks, wall)
 import Perfect.Config (perfectness)
 
 tryGen :: [(FactRat, Integer)] -> [Either Integer Integer]
-tryGen start = concat (map mapper start `using` parList rseq) where
+tryGen start = concat (map mapper start `using` parListChunk 1 rdeepseq) where
   mapper :: (FactRat, Integer) -> [Either Integer Integer]
   mapper x = map Left (wall x) ++ [Right (snd x)]
 
