@@ -1,17 +1,15 @@
-{-# OPTIONS_GHC -fno-warn-unused-binds #-}
-
 module Perfect.Sigmas where
 
 import Data.Bits
-import Math.NumberTheory.Primes.Sieve
+import Math.NumberTheory.Primes
 
 type SigmaF = Integer -> Integer -> Integer
 
 sigmaUsualPrimorial :: SigmaF
-sigmaUsualPrimorial p a = sum [ p^b | b<-[0..a]]
+sigmaUsualPrimorial p a = (p ^ (a + 1) - 1) `div` (p - 1) -- sum [ p^b | b<-[0..a]]
 
 sigmaAlterPrimorial :: SigmaF
-sigmaAlterPrimorial p a = sum [ p^b * (-1)^(a-b) | b<-[0..a]]
+sigmaAlterPrimorial p a = (p ^ (a + 1) + if odd a then (-1) else 1) `div` (p + 1) -- sum [ p^b * (-1)^(a-b) | b<-[0..a]]
 
 sigmaModExpPrimorial :: SigmaF
 sigmaModExpPrimorial p a = sum [ p^b | b<-[0..a], (a+1)`mod`(b+1) == 0 ]
