@@ -14,7 +14,7 @@ logName :: String
 logName = "output/" ++ filePrefix ++ "-" ++ show maxPrime ++ "-" ++ show maxPower ++ ".log"
 
 maxPrime :: Integer
-maxPower :: Integer
+maxPower :: Int
 config :: PerfectConfig
 
 maxPrime = 2000

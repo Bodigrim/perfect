@@ -26,17 +26,20 @@ n %% d = nf <> fmap negate df
 (\\) :: FactRat -> FactRat -> FactRat
 (\\) = Map.mergeWithKey (\_ a b -> let ab = a - b in if ab == 0 then Nothing else Just ab) id (fmap negate)
 
-numerFactors :: FactRat -> [(Int, Int)]
-numerFactors = Map.toList . Map.filter (> 0)
-
 eq1 :: FactRat -> Bool
 eq1 = Map.null
 
 numerEq1 :: FactRat -> Bool
 numerEq1 = all (< 0)
 
-numerCoprime :: FactRat -> Integer -> Bool
-numerCoprime a m = getAll $ Map.foldMapWithKey (\p k -> All $ k < 0 || m `mod` toInteger p /= 0) a
+-- assuming b has unit denominator
+numerCoprime :: FactRat -> FactRat -> Bool
+numerCoprime m1 m2 = null $ Map.mergeWithKey
+  (\_ a _ -> if a > 0 then Just () else Nothing)
+  (const mempty)
+  (const mempty)
+  m1
+  m2
 
 numDen :: FactRat -> (Integer, Integer)
 numDen = (f *** f) . Map.partition (> 0) where
