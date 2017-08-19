@@ -1,6 +1,15 @@
 {-# OPTIONS_GHC -fno-warn-unused-binds #-}
 
-module Perfect.Config (maxPrime, maxPower, sigmaPrimorial, perfectness, tryNumber, fileName, logName) where
+module Perfect.Config
+  ( maxPrime
+  , maxPower
+  , sigmaPrimorial
+  , perfectness
+  , tryNumber
+  , fileName
+  , logName
+  , runSigmaF
+  ) where
 
 import Perfect.Sigmas
 import Perfect.Types (FactRat, (%%))

@@ -6,7 +6,7 @@ import qualified Data.IntSet as Set
 import Data.Monoid
 import qualified Math.NumberTheory.Primes.Sieve as Primes
 
-import Perfect.Config (maxPrime, maxPower, sigmaPrimorial)
+import Perfect.Config
 import Perfect.Types
 
 primes :: [Int]
@@ -18,7 +18,7 @@ ratios p' = map (\(sigma, pa, a) -> (sigma %% pa, a)) ratios' where
   p = fromIntegral p'
   -- Initial set of sigma on primorials
   ratios'' :: [(Integer, Integer, Int)]
-  ratios'' = [ (sigmaPrimorial p (fromIntegral a), p ^ fromIntegral a, a) | a <- [1..maxPower] ]
+  ratios'' = [ (runSigmaF sigmaPrimorial p (fromIntegral a), p ^ fromIntegral a, a) | a <- [1..maxPower] ]
   -- If sigma on primorials contains primes > maxPrime it cannot be cancelled out
   -- Such elements can be safely removed
   ratios' :: [(Integer, Integer, Int)]
